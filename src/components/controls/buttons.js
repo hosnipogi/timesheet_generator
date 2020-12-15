@@ -1,8 +1,8 @@
 import React from 'react'
 
 const Button = (props) => {
-  const { func, isLoggedIn } = props;
-  return <button onClick={func}>{isLoggedIn ? 'Log out' : 'Log in'}</button>;
+  const { func, text } = props;
+  return <button onClick={func}>{text}</button>;
 };
 
 export default Button;

@@ -2,6 +2,8 @@ import React from 'react';
 import Clock from './components/clock';
 import Table from './components/table';
 import Controls from './components/controls';
+import Archive from './components/archive';
+
 import { LogProvider } from './lib/contexts/LogContext';
 import generateUid from './lib/utils/generateUid';
 
@@ -17,6 +19,8 @@ function App() {
       <LogProvider>
         <Table />
         <Controls />
+        <hr />
+        <Archive />
       </LogProvider>
     </>
   );

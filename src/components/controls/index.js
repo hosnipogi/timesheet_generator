@@ -21,13 +21,30 @@ const Controls = () => {
   const { logs, setLogs } = React.useContext(LogContext);
   const [isLoggedIn, setIsLoggedIn] = React.useState(checkIfLoggedIn(logs));
 
+  const clearLogs = () => {
+    const userPrompt = prompt('Type "ok" to clear logs', 'no');
+    if (userPrompt?.toLowerCase() === 'ok') {
+      localStorage.clear();
+      setLogs([]);
+      setIsLoggedIn(false);
+    }
+  };
+
   const handleClick = () => {
     const dateTime = new Date();
-    const date = dateTime.getDate();
+    const date = {
+      date: dateTime.getDate(),
+      month: dateTime.getMonth(),
+      year: dateTime.getFullYear(),
+    };
     const time = dateTime.toLocaleString();
     const lastLog = logs[logs.length - 1];
 
-    if (date === lastLog?.date) {
+    if (
+      date.year === lastLog?.date.year &&
+      date.month === lastLog?.date.month &&
+      date.date === lastLog?.date.date
+    ) {
       const obj = {
         date,
         login: !isLoggedIn ? [...lastLog.login, time] : lastLog.login,
@@ -57,7 +74,8 @@ const Controls = () => {
   return (
     <>
       <div>You are {isLoggedIn ? 'Logged In' : 'Logged Out'}</div>
-      <Button isLoggedIn={isLoggedIn} func={handleClick} />
+      <Button text={isLoggedIn ? 'Logout' : 'Login'} func={handleClick} />
+      {logs.length !== 0 && <Button text="Clear Logs" func={clearLogs} />}
     </>
   );
 };

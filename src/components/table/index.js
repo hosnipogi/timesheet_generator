@@ -1,5 +1,6 @@
 import React from 'react';
 import { LogContext } from '../../lib/contexts/LogContext';
+import Months from '../../lib/config/monthKeys';
 
 const generateRows = (logs) => {
   try {
@@ -7,7 +8,9 @@ const generateRows = (logs) => {
       logs &&
       logs.map((log, index) => (
         <tr key={index}>
-          <td>{log.date}</td>
+          <td>{`${Months[log.date.month]} ${log.date.date}, ${
+            log.date.year
+          }`}</td>
           <td style={{ color: 'red' }}>
             {log.login.map((l) => (
               <span key={l} style={{ display: 'block' }}>
