@@ -1,57 +1,37 @@
 import React from 'react';
 import { LogContext } from '../../lib/contexts/LogContext';
+import { filterMonth, generateRows } from './utils';
 import Months from '../../lib/config/monthKeys';
+import Controls from '../../components/controls';
 
-const generateRows = (logs) => {
-  try {
-    return (
-      logs &&
-      logs.map((log, index) => (
-        <tr key={index}>
-          <td>{`${Months[log.date.month]} ${log.date.date}, ${
-            log.date.year
-          }`}</td>
-          <td style={{ color: 'red' }}>
-            {log.login.map((l) => (
-              <span key={l} style={{ display: 'block' }}>
-                {l}
-              </span>
-            ))}
-          </td>
-          <td style={{ color: 'green' }} valign="top">
-            {log.logout.map((l) => (
-              <span key={l} style={{ display: 'block' }}>
-                {l}
-              </span>
-            ))}
-          </td>
-        </tr>
-      ))
-    );
-  } catch (e) {
-    console.log({ e, msg: e.message });
-    return (
-      <tr>
-        <td>Error</td>
-      </tr>
-    );
-  }
-};
-
-const Table = () => {
+const Table = (props) => {
+  const { match } = props;
   const { logs } = React.useContext(LogContext);
+  const { year, month } = match.params;
+  const date = new Date();
+
+  const currentMonth = filterMonth(
+    logs,
+    year ? year : date.getFullYear(),
+    month ? Months.indexOf(month) : date.getMonth()
+  );
+
+  const content = generateRows(currentMonth);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Login</th>
-          <th>Logout</th>
-        </tr>
-      </thead>
-      <tbody>{generateRows(logs)}</tbody>
-    </table>
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Login</th>
+            <th>Logout</th>
+          </tr>
+        </thead>
+        <tbody>{content}</tbody>
+      </table>
+      <Controls />
+    </>
   );
 };
 

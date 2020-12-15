@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { LogContext } from '../../lib/contexts/LogContext';
 import Months from '../../lib/config/monthKeys';
+import generateId from '../../lib/utils/generateUid';
 
 /**
  * Filter and generate only unique months or years
@@ -26,12 +28,16 @@ const Archive = () => {
     <div>
       <h3>Archive</h3>
       <ul>
-        {archive.map((i, yindex) => (
-          <li key={yindex}>
+        {archive.map((i) => (
+          <li key={generateId()}>
             {i[0].date.year}
             <ul>
-              {unique(i, 'month', (r, index) => (
-                <li key={index}>{Months[r]}</li>
+              {unique(i, 'month', (r, _) => (
+                <li key={generateId()}>
+                  <Link to={`/${i[0].date.year}/${Months[r]}`}>
+                    {Months[r]}
+                  </Link>
+                </li>
               ))}
             </ul>
           </li>
