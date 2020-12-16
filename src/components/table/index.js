@@ -10,13 +10,12 @@ const Table = (props) => {
   const { year, month } = match.params;
   const date = new Date();
 
-  const currentMonth = filterMonth(
+  const filteredMonth = filterMonth(
     logs,
     year ? year : date.getFullYear(),
     month ? Months.indexOf(month) : date.getMonth()
   );
-
-  const content = generateRows(currentMonth);
+  const content = generateRows(filteredMonth);
 
   return (
     <>
@@ -30,7 +29,7 @@ const Table = (props) => {
         </thead>
         <tbody>{content}</tbody>
       </table>
-      <Controls />
+      <Controls currentTable={filteredMonth} />
     </>
   );
 };

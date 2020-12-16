@@ -4,7 +4,6 @@ import Button from './buttons';
 import { LogContext } from '../../lib/contexts/LogContext';
 import {
   checkIfLoggedIn,
-  dateTime,
   date,
   generate12HourTime,
   generateLink,
@@ -12,7 +11,7 @@ import {
 } from './utils';
 import Months from '../../lib/config/monthKeys';
 
-const Controls = () => {
+const Controls = ({ currentTable }) => {
   const { logs, setLogs } = React.useContext(LogContext);
   const [isLoggedIn, setIsLoggedIn] = React.useState(checkIfLoggedIn(logs));
   const params = useParams();
@@ -31,16 +30,16 @@ const Controls = () => {
   };
 
   const handleClick = () => {
-    const time = generate12HourTime(dateTime);
+    const time = generate12HourTime();
     const lastLog = logs[logs.length - 1];
-
+    const d = date();
     if (
-      date.year === lastLog?.date.year &&
-      date.month === lastLog?.date.month &&
-      date.date === lastLog?.date.date
+      d.year === lastLog?.date.year &&
+      d.month === lastLog?.date.month &&
+      d.date === lastLog?.date.date
     ) {
       const obj = {
-        date,
+        date: d,
         login: !isLoggedIn ? [...lastLog.login, time] : lastLog.login,
         logout: isLoggedIn
           ? !lastLog.logout[0]
@@ -55,7 +54,7 @@ const Controls = () => {
       setLogs([
         ...logs,
         {
-          date,
+          date: d,
           login: [!isLoggedIn ? time : ''],
           logout: [isLoggedIn ? time : ''],
         },
@@ -73,15 +72,17 @@ const Controls = () => {
         <>
           <Button text="Clear Logs" func={clearLogs} />
           <Button text="Sync to server" func={sync} />
-          <Link style={{ display: 'block' }} to={generateLink(1, params)}>
-            Generate 1-15 cutoff
-          </Link>
-          {logs[logs.length - 1]?.date >= 16 && (
+          {currentTable[0].date.date < 16 && (
+            <Link style={{ display: 'block' }} to={generateLink(1, params)}>
+              Generate 1-15 cutoff
+            </Link>
+          )}
+          {currentTable[currentTable.length - 1].date.date >= 16 && (
             <Link style={{ display: 'block' }} to={generateLink(2, params)}>
               Generate 16-
               {getLastDayOfMonth(
-                parseInt(params.year) || date.year,
-                Months.indexOf(params.month) || date.month
+                parseInt(params.year) || date().year,
+                Months.indexOf(params.month) || date().month
               )}
               &nbsp;cutoff
             </Link>

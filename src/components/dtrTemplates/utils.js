@@ -31,8 +31,6 @@ export const generateRows = ({ array, cutoff, date }) => {
     );
   });
 
-  // TODO Sort the array
-
   return arr;
 };
 

@@ -1,10 +1,13 @@
 import Months from '../../lib/config/monthKeys';
 
-const dateTime = new Date();
-const date = {
-  date: dateTime.getDate(),
-  month: dateTime.getMonth(),
-  year: dateTime.getFullYear(),
+const dateTime = () => new Date();
+const date = () => {
+  const d = dateTime();
+  return {
+    date: d.getDate(),
+    month: d.getMonth(),
+    year: d.getFullYear(),
+  };
 };
 
 export { dateTime, date };
@@ -24,21 +27,24 @@ export function checkIfLoggedIn(arr) {
   }
 }
 
-export function generate12HourTime(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'PM' : 'AM';
+export function generate12HourTime() {
+  const d = dateTime();
+  let hours = d.getHours();
+  let minutes = d.getMinutes();
+  const secs = d.getSeconds();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? '0' + minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
+  const strTime = hours + ':' + minutes + ' ' + secs + ampm;
   return strTime;
 }
 
 export function generateLink(cutoff, params) {
+  const d = date();
   return params.year
     ? `/dtr/${params.year}/${params.month}/${cutoff}`
-    : `/dtr/${date.year}/${Months[date.month]}/${cutoff}`;
+    : `/dtr/${d.year}/${Months[d.month]}/${cutoff}`;
 }
 
 export { default as getLastDayOfMonth } from '../../lib/utils/getLastDayOfMonth';
