@@ -4,29 +4,33 @@ import { LogContext } from '../../lib/contexts/LogContext';
 import { filterMonth, generateRows } from './utils';
 import Months from '../../lib/config/monthKeys';
 import LSERV from './lserv/';
-import './lserv/style.css';
 
 const Dtr = ({ template }) => {
   const { logs } = React.useContext(LogContext);
-  const params = useParams();
-  const { year, month, cutoff } = params;
   const date = new Date();
+  const params = useParams();
+  const year = params.year || date.getFullYear();
+  const month = Months.indexOf(params.month) || date.getMonth();
+  const cutoff = params.cutoff || 1;
 
-  const filteredLogs = filterMonth(
-    logs,
-    year ? year : date.getFullYear(),
-    month ? Months.indexOf(month) : month.getMonth()
-  );
+  const filteredLogs = filterMonth(logs, year, month);
 
   const content = generateRows({
     array: filteredLogs,
-    cutoff: cutoff || 1,
+    cutoff,
     date: { year, month },
   });
 
   switch (template) {
     case 'lserv':
-      return <LSERV logs={content} />;
+      return (
+        <LSERV
+          logs={content}
+          title={`${Months[month]} ${year} - ${cutoff}${
+            cutoff === 1 ? 'st' : 'nd'
+          } half`}
+        />
+      );
     default:
       return <div>Select a template</div>;
   }

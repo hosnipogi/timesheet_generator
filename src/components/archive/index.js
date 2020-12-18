@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { LogContext } from '../../lib/contexts/LogContext';
 import Months from '../../lib/config/monthKeys';
 import generateId from '../../lib/utils/generateUid';
+import styled from './archive.module.css';
 
 /**
  * Filter and generate only unique months or years
@@ -25,7 +26,7 @@ const Archive = () => {
   );
 
   return (
-    <div>
+    <div className={styled.archive}>
       <h3>Archive</h3>
       <ul>
         {archive.map((i) => (

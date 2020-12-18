@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Button from './buttons';
 import { LogContext } from '../../lib/contexts/LogContext';
+import shape from '../../lib/config/logObjectShape';
 import {
   checkIfLoggedIn,
   date,
@@ -10,6 +11,7 @@ import {
   getLastDayOfMonth,
 } from './utils';
 import Months from '../../lib/config/monthKeys';
+import styled from './controls.module.css';
 
 const Controls = ({ currentTable }) => {
   const { logs, setLogs } = React.useContext(LogContext);
@@ -24,7 +26,7 @@ const Controls = ({ currentTable }) => {
     const userPrompt = prompt('Type "ok" to clear logs', 'no');
     if (userPrompt?.toLowerCase() === 'ok') {
       localStorage.clear();
-      setLogs([]);
+      setLogs([shape]);
       setIsLoggedIn(false);
     }
   };
@@ -34,9 +36,9 @@ const Controls = ({ currentTable }) => {
     const lastLog = logs[logs.length - 1];
     const d = date();
     if (
-      d.year === lastLog?.date.year &&
-      d.month === lastLog?.date.month &&
-      d.date === lastLog?.date.date
+      d.year === lastLog.date.year &&
+      d.month === lastLog.date.month &&
+      d.date === lastLog.date.date
     ) {
       const obj = {
         date: d,
@@ -46,6 +48,7 @@ const Controls = ({ currentTable }) => {
             ? [time]
             : [...lastLog.logout, time]
           : lastLog.logout,
+        remarks: lastLog.remarks,
       };
       const logsCopy = [...logs];
       logsCopy[logsCopy.length - 1] = obj;
@@ -57,6 +60,7 @@ const Controls = ({ currentTable }) => {
           date: d,
           login: [!isLoggedIn ? time : ''],
           logout: [isLoggedIn ? time : ''],
+          remarks: '',
         },
       ]);
     }
@@ -65,20 +69,29 @@ const Controls = ({ currentTable }) => {
   };
 
   return (
-    <section>
-      <p>You are {isLoggedIn ? 'Logged In' : 'Logged Out'}</p>
+    <section style={{ textAlign: 'center' }}>
+      <p>
+        You are{' '}
+        <span
+          className={`${styled.badge} ${
+            isLoggedIn ? styled.loggedin : styled.loggedout
+          }`}
+        >
+          {isLoggedIn ? 'Logged In' : 'Logged Out'}
+        </span>
+      </p>
       <Button text={isLoggedIn ? 'Logout' : 'Login'} func={handleClick} />
-      {logs.length !== 0 && (
+      {logs[logs.length - 1].login.length !== 0 && (
         <>
           <Button text="Clear Logs" func={clearLogs} />
           <Button text="Sync to server" func={sync} />
-          {currentTable[0].date.date < 16 && (
-            <Link style={{ display: 'block' }} to={generateLink(1, params)}>
+          {currentTable[0]?.date.date < 16 && (
+            <Link className={styled.links} to={generateLink(1, params)}>
               Generate 1-15 cutoff
             </Link>
           )}
-          {currentTable[currentTable.length - 1].date.date >= 16 && (
-            <Link style={{ display: 'block' }} to={generateLink(2, params)}>
+          {currentTable[currentTable.length - 1]?.date.date >= 16 && (
+            <Link className={styled.links} to={generateLink(2, params)}>
               Generate 16-
               {getLastDayOfMonth(
                 parseInt(params.year) || date().year,

@@ -1,0 +1,15 @@
+header {
+  text-align: center;
+}
+
+.badge {
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  background-color: darkgreen;
+}
+
+nav {
+  margin: 1rem 0;
+}

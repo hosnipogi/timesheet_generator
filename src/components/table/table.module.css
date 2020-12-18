@@ -1,0 +1,24 @@
+.main {
+  text-align: center;
+}
+
+table.unstyledTable {
+  margin: 0 auto;
+}
+table.unstyledTable td,
+table.unstyledTable th {
+  border: 1px solid #cccccc;
+}
+table.unstyledTable thead {
+  background: #dddddd;
+}
+table.unstyledTable thead th {
+  font-weight: normal;
+}
+table.unstyledTable tfoot {
+  font-weight: bold;
+}
+
+.remarks {
+  text-align: center;
+}

@@ -13,7 +13,7 @@ const date = () => {
 export { dateTime, date };
 
 export function checkIfLoggedIn(arr) {
-  if (!arr.length) return false;
+  if (!arr[0].login.length) return false;
 
   const lastIndex = arr.length - 1;
   const logoutLastIndexLength = arr[lastIndex].logout.length;
@@ -31,12 +31,11 @@ export function generate12HourTime() {
   const d = dateTime();
   let hours = d.getHours();
   let minutes = d.getMinutes();
-  const secs = d.getSeconds();
   const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? '0' + minutes : minutes;
-  const strTime = hours + ':' + minutes + ' ' + secs + ampm;
+  const strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 }
 
