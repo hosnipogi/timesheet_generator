@@ -8,7 +8,7 @@ import styled from './archive.module.css';
 /**
  * Filter and generate only unique months or years
  * @param {Array} arr The date array
- * @param {String} d The string "months" or "year"
+ * @param {String} d The string "month" or "year"
  * @param {CallableFunction} cb Callback
  * @return {Array} Returns an array with unique items
  */
@@ -26,25 +26,29 @@ const Archive = () => {
   );
 
   return (
-    <div className={styled.archive}>
-      <h3>Archive</h3>
-      <ul>
-        {archive.map((i) => (
-          <li key={generateId()}>
-            {i[0].date.year}
-            <ul>
-              {unique(i, 'month', (r, _) => (
-                <li key={generateId()}>
-                  <Link to={`/${i[0].date.year}/${Months[r]}`}>
-                    {Months[r]}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      {logs[0].login.length !== 0 && (
+        <div className={styled.archive}>
+          <h3>Archive</h3>
+          <ul>
+            {archive.map((i) => (
+              <li key={generateId()}>
+                {i[0].date.year}
+                <ul>
+                  {unique(i, 'month', (r, _) => (
+                    <li key={generateId()}>
+                      <Link to={`/${i[0].date.year}/${Months[r]}`}>
+                        {Months[r]}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
   );
 };
 

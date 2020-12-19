@@ -75,7 +75,7 @@ const Lserv = ({ logs, title }) => {
 
       const logStyles = (logArray) => ({
         ...styles,
-        fontSize: logArray.length ? 4 + 4 / logArray.length : 8,
+        fontSize: logArray.length ? 4 + 4 / logArray.length : 7,
         valign: logArray.length > 1 ? 'top' : 'center',
         halign: logArray.length > 2 ? 'left' : 'center',
         cellPadding: {
@@ -183,6 +183,7 @@ const Lserv = ({ logs, title }) => {
     doc.text(':', margin + 31, marginTop + 2);
     doc.text(':', margin + 31, marginTop + 6);
     doc.text(':', margin + 31, marginTop + 10);
+    doc.text(`${title}`, margin + 34, marginTop + 13);
     doc.text(':', margin + 31, marginTop + 14);
     doc.text(':', margin + 31, marginTop + 18);
 
@@ -228,7 +229,7 @@ const Lserv = ({ logs, title }) => {
     );
 
     const list = [
-      '1.Please complete the missing time entries or indicate in the Remarks column if you are on official business, on travel, attended a seminar/training, etc.',
+      '1. Please complete the missing time entries or indicate in the Remarks column if you are on official business, on travel, attended a seminar/training, etc.',
       '2. Make sure all the manual entries are properly signed/initialed by your Department Head or his authorized representative.',
       '3. Submit this Timesheet together with the required supporting documents to LSERV Project Coordinator duly signed/approved by your\n Department Head or his authorized representative.',
     ];
@@ -240,7 +241,7 @@ const Lserv = ({ logs, title }) => {
     // doc.save('test');
 
     preview.current.src = doc.output('datauristring');
-  }, [logs]);
+  }, [logs, title]);
 
   return (
     <iframe
