@@ -5,23 +5,29 @@ import Months from '../../lib/config/monthKeys';
 import generateId from '../../lib/utils/generateUid';
 import styled from './archive.module.css';
 
+import { IDate } from '../../lib/config/date';
 /**
  * Filter and generate only unique months or years
- * @param {Array} arr The date array
+ * @param {IDate[]} arr The date array
  * @param {String} d The string "month" or "year"
  * @param {CallableFunction} cb Callback
- * @return {Array} Returns an array with unique items
+ * @return {IDate[]} Returns an array with unique items
  */
-const unique = (arr, d, cb) =>
+const unique = (
+  arr: IDate[],
+  d: 'month' | 'year',
+  cb: CallableFunction
+): IDate[] =>
   arr
-    .map(({ date }) => date[d])
+    .map(({ date }) => {
+      return date[d];
+    })
     .filter((i, position, self) => self.indexOf(i) === position)
-    .map((final, index) => typeof cb === 'function' && cb(final, index));
+    .map((final, index) => cb(final, index));
 
 const Archive = () => {
   const { logs } = React.useContext(LogContext);
-
-  const archive = unique(logs, 'year', (yr, _) =>
+  const archive = unique(logs, 'year', (yr: number, _: undefined) =>
     logs.filter(({ date: { year } }) => year === yr)
   );
 
@@ -35,7 +41,7 @@ const Archive = () => {
               <li key={generateId()}>
                 {i[0].date.year}
                 <ul>
-                  {unique(i, 'month', (r, _) => (
+                  {unique(i as any, 'month', (r: number, _: undefined) => (
                     <li key={generateId()}>
                       <Link to={`/${i[0].date.year}/${Months[r]}`}>
                         {Months[r]}

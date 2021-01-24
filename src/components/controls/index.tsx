@@ -13,11 +13,14 @@ import {
 import Months from '../../lib/config/monthKeys';
 import styled from './controls.module.css';
 
-const Controls = ({ currentTable }) => {
+type ControlProps = {
+  currentTable: any[];
+};
+
+const Controls = ({ currentTable }: ControlProps) => {
   const { logs, setLogs } = React.useContext(LogContext);
   const [isLoggedIn, setIsLoggedIn] = React.useState(checkIfLoggedIn(logs));
-  const params = useParams();
-
+  const params = useParams<{ year: string; month: string }>();
   const sync = () => {
     alert(JSON.stringify(logs));
   };
@@ -94,8 +97,8 @@ const Controls = ({ currentTable }) => {
             <Link className={styled.links} to={generateLink(2, params)}>
               Generate 16-
               {getLastDayOfMonth(
-                parseInt(params.year) || date().year,
-                Months.indexOf(params.month) || date().month
+                +params.year || date().year,
+                Months[params.month] || date().month
               )}
               &nbsp;cutoff
             </Link>

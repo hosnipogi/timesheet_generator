@@ -1,6 +1,7 @@
-const date = new Date();
+import { IDate } from './date';
 
-const shape = {
+const date = new Date();
+const shape: IDate = {
   date: {
     date: date.getDate(),
     month: date.getMonth(),

@@ -2,23 +2,26 @@ import React from 'react';
 import { LogContext } from '../../lib/contexts/LogContext';
 import { filterMonth } from './utils';
 import Months from '../../lib/config/monthKeys';
-import Controls from '../../components/controls';
+import Controls from '../controls';
 import generateId from '../../lib/utils/generateUid';
 import styled from './table.module.css';
+import { RouteComponentProps } from 'react-router-dom';
+import { IDate } from '../../lib/config/date';
 
-const Table = ({ match }) => {
+const Table: (
+  props: RouteComponentProps<{ year: string; month: string }>
+) => JSX.Element = ({ match }) => {
   const { logs, setLogs } = React.useContext(LogContext);
-
-  const [filteredMonth, setFilteredMonth] = React.useState([]);
-  const [remarks, setRemarks] = React.useState(null);
+  const [filteredMonth, setFilteredMonth] = React.useState<IDate[]>([]);
+  const [remarks, setRemarks] = React.useState<string[] | null>(null);
 
   React.useEffect(() => {
     const date = new Date();
     const { year, month } = match.params;
     const filteredMonth = filterMonth(
       logs,
-      year ? year : date.getFullYear(),
-      month ? Months.indexOf(month) : date.getMonth()
+      year ? +year : date.getFullYear(),
+      month ? Months[month] : date.getMonth()
     );
     setFilteredMonth(filteredMonth);
 
@@ -29,15 +32,26 @@ const Table = ({ match }) => {
     filteredMonth,
   ]);
 
-  const handleChange = (e, index) => {
-    const rows = [...remarks];
-    rows[index] = e.target.value;
-    setRemarks(rows);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (remarks) {
+      const rows = [...remarks];
+      rows[index] = e.target.value;
+      setRemarks(rows);
+    }
   };
 
-  const handleBlur = (year, month, date, index) => {
+  const handleBlur = (
+    year: number,
+    month: number,
+    date: number,
+    index: number
+  ) => {
     const matchedLog = logs.map((log) => {
       if (
+        remarks &&
         log.date.date === date &&
         log.date.month === month &&
         log.date.year === year
@@ -97,7 +111,7 @@ const Table = ({ match }) => {
                           index
                         )
                       }
-                      value={remarks[index] || ''}
+                      value={remarks ? remarks[index] : ''}
                     />
                   </td>
                 </tr>

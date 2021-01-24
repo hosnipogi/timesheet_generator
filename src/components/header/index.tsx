@@ -1,6 +1,6 @@
 import React from 'react';
 import Nav from './nav';
-import Clock from '../clock/';
+import Clock from '../clock';
 import generateUid from '../../lib/utils/generateUid';
 import styled from './header.module.css';
 

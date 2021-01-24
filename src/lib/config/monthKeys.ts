@@ -1,4 +1,4 @@
-const months = [
+enum Months {
   'January',
   'February',
   'March',
@@ -11,6 +11,6 @@ const months = [
   'October',
   'November',
   'December',
-];
+}
 
-export default months;
+export default Months;

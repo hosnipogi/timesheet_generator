@@ -1,12 +1,20 @@
 import React from 'react';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
+import { IDate } from '../../../lib/config/date';
 
-const Lserv = ({ logs, title }) => {
-  const preview = React.useRef(null);
-
+const Lserv: (props: { logs: IDate[]; title: string }) => JSX.Element = ({
+  logs,
+  title,
+}) => {
+  const preview = React.useRef<HTMLIFrameElement>(
+    document.createElement('iframe')
+  );
+  console.log({ logs });
   React.useEffect(() => {
-    const styles = {
+    const styles: {
+      [key: string]: string | number | object;
+    } = {
       valign: 'center',
       halign: 'center',
       fontSize: 6,
@@ -70,10 +78,14 @@ const Lserv = ({ logs, title }) => {
     ];
 
     const body = logs.map((i) => {
-      const login = i.login.map((i) => i);
+      const login = i.login.map((i, index) => {
+        console.log({ i, index });
+        return i;
+      });
       const logout = i.logout.map((i) => i);
-
-      const logStyles = (logArray) => ({
+      // const login = ['1'];
+      // const logout = ['1'];
+      const logStyles = (logArray: { length: number }) => ({
         ...styles,
         fontSize: logArray.length ? 4 + 4 / logArray.length : 7,
         valign: logArray.length > 1 ? 'top' : 'center',
@@ -145,7 +157,7 @@ const Lserv = ({ logs, title }) => {
     body.push([
       {
         content: 'TOTAL',
-        colSpan: 8,
+        // colSpan: 8,
         styles: {
           ...styles,
           halign: 'right',
@@ -171,7 +183,7 @@ const Lserv = ({ logs, title }) => {
 
     // header
 
-    doc.text('TIMESHEET', margin + 2, marginTop - 10, {}, {}, 'center');
+    doc.text('TIMESHEET', margin + 2, marginTop - 10, {}, {});
     doc.setFontSize(fontSize);
 
     doc.text('EMP. NO', margin + 2, marginTop + 2);
@@ -194,8 +206,7 @@ const Lserv = ({ logs, title }) => {
     doc.line(margin + 32, marginTop + 18, 80, marginTop + 18);
 
     //table
-
-    doc.autoTable({
+    autoTable(doc, {
       startY: marginTop + 22,
       head,
       body,
@@ -205,7 +216,7 @@ const Lserv = ({ logs, title }) => {
 
     //footer
 
-    const footerY = doc.lastAutoTable.finalY;
+    const footerY = (doc as any).lastAutoTable.finalY;
     doc.setFontSize(fontSize + 1);
     const t =
       'I hereby certify that the above is a true and correct report of the hours of work perfomed, records of which was made daily at the time of arrival at and departure from Office.';

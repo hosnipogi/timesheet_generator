@@ -31,4 +31,4 @@ function App() {
 
 export default App;
 
-const Layout = ({ children }) => <main>{children}</main>;
+const Layout: React.FC = ({ children }) => <main>{children}</main>;

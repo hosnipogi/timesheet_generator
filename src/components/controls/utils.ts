@@ -1,4 +1,5 @@
 import Months from '../../lib/config/monthKeys';
+import { IDate } from '../../lib/config/date';
 
 const dateTime = () => new Date();
 const date = () => {
@@ -12,7 +13,7 @@ const date = () => {
 
 export { dateTime, date };
 
-export function checkIfLoggedIn(arr) {
+export function checkIfLoggedIn(arr: IDate[]) {
   if (!arr[0].login.length) return false;
 
   const lastIndex = arr.length - 1;
@@ -30,7 +31,7 @@ export function checkIfLoggedIn(arr) {
 export function generate12HourTime() {
   const d = dateTime();
   let hours = d.getHours();
-  let minutes = d.getMinutes();
+  let minutes: string | number = d.getMinutes();
   const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
@@ -39,7 +40,10 @@ export function generate12HourTime() {
   return strTime;
 }
 
-export function generateLink(cutoff, params) {
+export function generateLink(
+  cutoff: number,
+  params: { year: string; month: string }
+) {
   const d = date();
   return params.year
     ? `/dtr/${params.year}/${params.month}/${cutoff}`
