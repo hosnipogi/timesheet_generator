@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/timesheet_generator">
       <LogProvider>
         <Header />
         <Layout>
