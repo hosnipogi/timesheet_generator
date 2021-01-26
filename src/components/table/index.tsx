@@ -13,7 +13,7 @@ const Table: (
 ) => JSX.Element = ({ match }) => {
   const { logs, setLogs } = React.useContext(LogContext);
   const [filteredMonth, setFilteredMonth] = React.useState<IDate[]>([]);
-  const [remarks, setRemarks] = React.useState<string[] | null>(null);
+  const [remarks, setRemarks] = React.useState<string[] | string>('');
 
   React.useEffect(() => {
     const date = new Date();
@@ -36,7 +36,7 @@ const Table: (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    if (remarks) {
+    if (Array.isArray(remarks)) {
       const rows = [...remarks];
       rows[index] = e.target.value;
       setRemarks(rows);
@@ -111,7 +111,7 @@ const Table: (
                           index
                         )
                       }
-                      value={remarks ? remarks[index] : ''}
+                      value={remarks ? remarks[index] : remarks}
                     />
                   </td>
                 </tr>

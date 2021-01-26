@@ -1,5 +1,5 @@
 import React from 'react';
-// import styled from './controls.module.css';
+import styled from './controls.module.css';
 
 type ButtonProps = {
   func: React.MouseEventHandler<HTMLButtonElement>;
@@ -7,7 +7,7 @@ type ButtonProps = {
 };
 
 const Button = ({ func, text }: ButtonProps) => (
-  <button className="hosni" onClick={func}>
+  <button className={styled.myButton} onClick={func}>
     {text}
   </button>
 );
